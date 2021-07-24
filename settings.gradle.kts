@@ -1,2 +1,10 @@
 rootProject.name = "Enotty"
-include("ok-m1l1")
+
+pluginManagement {
+    plugins {
+        val kotlinVersion: String by settings
+        kotlin("jvm") version kotlinVersion
+        kotlin("multiplatform") version kotlinVersion
+    }
+}
+include("common")
