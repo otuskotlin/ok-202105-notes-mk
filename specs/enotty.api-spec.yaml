@@ -1,0 +1,477 @@
+openapi: 3.0.1
+info:
+  title: E-notty
+  description: 'E-notty - бекенд для обслуживания нужд одноимённого мобильного приложения на приложения'
+  version: 0.0.1
+servers:
+  - url: http://localhost
+tags:
+  - name: file
+    description: CRUDS для сущностей File
+paths:
+
+  /note/init:
+    post:
+      tags:
+        - files
+      summary: Первичная информация при обращении к серверу
+      operationId: initFile
+      requestBody:
+        description: Объект запроса при первом обращении к серверу
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InitNoteResponse'
+        required: true
+      responses:
+        200:
+          description: al response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitNoteResponse'
+
+  /note/create:
+    post:
+      tags:
+        - note
+      summary: Создать новую заметку
+      operationId: createNote
+      requestBody:
+        description: Объект запроса для создания новой заметки
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateNoteRequest'
+        required: true
+      responses:
+        200:
+          description: All responses
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateNoteResponse'
+
+
+  /note/read:
+    post:
+      tags:
+        - note
+      summary: Получить информацию о заметке
+      operationId: readNote
+      requestBody:
+        description: Объект запроса для получения информации о заметке
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReadNoteRequest'
+        required: true
+      responses:
+        200:
+          description: All responses
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReadNoteResponse'
+
+  /note/update:
+    post:
+      tags:
+        - note
+      summary: Обновить заметку
+      operationId: updateNote
+      requestBody:
+        description: Объект запроса для обновления заметки
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateNoteRequest'
+        required: true
+      responses:
+        200:
+          description: all response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateNoteResponse'
+
+  /note/delete:
+    post:
+      tags:
+        - note
+      summary: Удалить заметку
+      operationId: deleteNote
+      requestBody:
+        description: Объект запроса для удаления заметки
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeleteNoteRequest'
+        required: true
+      responses:
+        200:
+          description: all responses
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteNoteResponse'
+
+  /note/search:
+    post:
+      tags:
+        - note
+      summary: Поиск заметки
+      operationId: searchNote
+      requestBody:
+        description: Объект запроса для поиска заметки
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchNoteRequest'
+        required: true
+      responses:
+        200:
+          description: all response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchNoteResponse'
+
+
+components:
+  schemas:
+    BaseMessage:
+      type: object
+      description: Базовый класс для обмена данными
+      properties:
+        messageType:
+          type: string
+          title: Дискриминатор
+          description: Дискриминатор, содержащий тип класса сообщения. Используется для сериализации
+      discriminator:
+        propertyName: messageType
+
+    BaseRequest:
+      description: Базовый класс для всех запросов
+      allOf:
+        - type: object
+          properties:
+            requestId:
+              type: string
+
+    BaseResponse:
+      description: Базовый клсаа для всех ответов
+      allOf:
+        - type: object
+          properties:
+            requestIt:
+              type: string
+            result:
+              type: string
+              enum:
+                - success
+                - error
+            errors:
+              type: array
+              items:
+                $ref: '#/components/schemas/RequestError'
+
+    RequestError:
+      type: object
+      description: Описание ошибки обработки запроса
+      properties:
+        message:
+          type: string
+        field:
+          type: string
+
+    CreatableNote:
+      type: object
+      description: Структура с данными, необходимыми для создания файла
+      properties:
+        title:
+          type: string
+          title: Заголовок файла
+          description: Краткое название файла
+        content:
+          type: string
+          title: Содержимое файла
+          description: Содержимое файла, который может быть только у заметок
+        parentId:
+          type: string
+          title: идентификатор родительского файла
+        role:
+          type: string
+          enum:
+            - folder
+            - note
+            - list
+          title: Роль файла
+        color:
+          type: integer
+          title: Цвет файла
+          description: Цветная маска, накладываемая на иконку файла
+        password:
+          type: string
+          title: Пароль
+          description: Пароль на вход в папку
+        extendedMode:
+          type: boolean
+          title: Расширенный режим редактирования
+          description: Флаг, отвечающий за поддержку расширенного редакторо для данной заметки
+        icon:
+          type: string
+          title: Иконка файла
+          description: Ссылка на изображение иконки
+        isHidden:
+          type: boolean
+          title: Скрытый файл
+          description: Флаг, отвечающий за то, скрыт файл или нет
+        isFavorite:
+          type: boolean
+          title: Файл в избранном
+          description: Флаг, помещающий файл в избранное
+        isShowTitle:
+          type: boolean
+          title: Показывать ли заголовок заметки
+          description: Флаг, отвечающий за необходимость отображения заголовка заметки
+        createdAt:
+          type: string
+          title: Дата создания файла
+        updatedAt:
+          type: string
+          title: Дата редактирования файла
+        userUid:
+          type: string
+          title: Уникальный идентификатор владельца файла
+
+    UpdatableNote:
+      description: Структура с данными, необходимыми для обновления файла
+      allOf:
+        - $ref: '#/components/schemas/CreatableNote'
+        - type: object
+      type: object
+      properties:
+        id:
+          type: string
+          description: Идентификатор файла
+
+    ResponseNote:
+      description: Структура, описывающая заметку в ответе
+      allOf:
+        - $ref: '#/components/schemas/UpdatableNote'
+        - type: object
+          properties:
+            permissions:
+              type: array
+              uniqueItems: true
+              items:
+                $ref: '#/components/schemas/NotePermissions'
+
+    NotePermissions:
+      type: string
+      description: Доступы к операциям над файлом
+      enum:
+        - read
+        - update
+        - delete
+        - share
+
+    BaseDebugRequest:
+      type: object
+      description: Структура с описанием отладочных параметров запроса
+      properties:
+        mode:
+          type: string
+          default: prod
+          enum:
+            - prod
+            - test
+            - stub
+
+    BasePaginatedRequest:
+      type: object
+      description: Структура с описанием запрашиваемой страницы в запросах списка
+      properties:
+        size:
+          type: integer
+          description: Размер запрашиваемой страницы
+          format: int32
+        lastId:
+          type: string
+          description: Идентификатор последнего объекта предыдущей страницы
+
+    BasePaginatedResponse:
+      type: object
+      description: Структура я описанием страницы в ответе
+      properties:
+        size:
+          type: integer
+          description: Размер запрашиваемой страницы
+          format: int32
+        lastId:
+          type: string
+          description: Идентификатор последнего объекта предыдущей страницы
+        position:
+          type: string
+          enum:
+            - first
+            - middle
+            - last
+
+
+    InitNoteResponse:
+      description: Структура для ответа с начальным состоянием при старте клиента
+      allOf:
+        - $ref: '#/components/schemas/BaseMessage'
+        - $ref: '#/components/schemas/BaseResponse'
+        - type: object
+
+
+    CreateNoteRequest:
+      description: Структура для запроса создания новой заметки
+      allOf:
+        - $ref: '#/components/schemas/BaseMessage'
+        - $ref: '#/components/schemas/BaseRequest'
+        - type: object
+          properties:
+            createdNote:
+              $ref: '#/components/schemas/CreatableNote'
+            debug:
+              allOf:
+                - $ref: '#/components/schemas/BaseDebugRequest'
+                - type: object
+                  properties:
+                    stub:
+                      type: string
+                      enum:
+                        - success
+                        - emptyTitle
+                        - databaseError
+
+    CreateNoteResponse:
+      description: Структура для ответа на запрос о создании заметки
+      allOf:
+        - $ref: '#/components/schemas/BaseMessage'
+        - $ref: '#/components/schemas/BaseResponse'
+        - type: object
+          properties:
+            createdNote:
+              $ref: '#/components/schemas/ResponseNote'
+
+    ReadNoteRequest:
+      description: Структура для получения заметки
+      allOf:
+        - $ref: '#/components/schemas/BaseMessage'
+        - $ref: '#/components/schemas/BaseRequest'
+        - type: object
+          properties:
+            readNoteId:
+              type: string
+            debug:
+              allOf:
+                - $ref: '#/components/schemas/BaseDebugRequest'
+                - type: object
+                  properties:
+                    stub:
+                      type: string
+                      enum:
+                        - success
+                        - emptyId
+                        - databaseError
+
+    ReadNoteResponse:
+      description: Структура для ответа на запрос с информацией о заметке
+      allOf:
+        - $ref: '#/components/schemas/BaseMessage'
+        - $ref: '#/components/schemas/BaseResponse'
+        - type: object
+          properties:
+            readNote:
+              $ref: '#/components/schemas/ResponseNote'
+
+    UpdateNoteRequest:
+      description: Структура для запроса обновления существующей заметки
+      allOf:
+        - $ref: '#/components/schemas/BaseMessage'
+        - $ref: '#/components/schemas/BaseResponse'
+        - type: object
+          properties:
+            createNote:
+              $ref: '#/components/schemas/UpdatableNote'
+            debug:
+              allOf:
+                - $ref: '#/components/schemas/BaseDebugRequest'
+                - type: object
+                  properties:
+                    stub:
+                      type: string
+                      enum:
+                        - success
+                        - emptyTitle
+                        - databaseError
+
+    UpdateNoteResponse:
+      description: Структура для ответа на запрос с информацией о заметке
+      allOf:
+        - $ref: '#/components/schemas/BaseMessage'
+        - $ref: '#/components/schemas/BaseResponse'
+        - type: object
+          properties:
+            updateNote:
+              $ref: '#/components/schemas/ResponseNote'
+
+    DeleteNoteRequest:
+      description: Структура для запроса на уданение заметки
+      allOf:
+        - $ref: '#/components/schemas/BaseMessage'
+        - $ref: '#/components/schemas/BaseResponse'
+        - type: object
+          properties:
+            deleteNoteId:
+              type: string
+            debug:
+              allOf:
+                - $ref: '#/components/schemas/BaseDebugRequest'
+                - type: object
+                  properties:
+                    stub:
+                      type: string
+                      enum:
+                        - success
+                        - emptyId
+                        - databaseError
+
+    DeleteNoteResponse:
+      description: Структура для ответа на запрос об удалении заметки
+      allOf:
+        - $ref: '#/components/schemas/BaseMessage'
+        - $ref: '#/components/schemas/BaseResponse'
+        - type: object
+          properties:
+            deletedAd:
+              $ref: '#/components/schemas/ResponseNote'
+
+    SearchNoteRequest:
+      description: Структура для запроса поиска заметки
+      allOf:
+        - $ref: '#/components/schemas/BaseMessage'
+        - $ref: '#/components/schemas/BaseRequest'
+        - type: object
+          properties:
+            page:
+              $ref: '#/components/schemas/BasePaginatedRequest'
+
+    SearchNoteResponse:
+      description: Структура для ответа на запрос поиска заметки
+      allOf:
+        - $ref: '#/components/schemas/BaseMessage'
+        - $ref: '#/components/schemas/BaseResponse'
+        - type: object
+          properties:
+            page:
+              $ref: '#/components/schemas/BasePaginatedResponse'
+            foundNotes:
+              type: array
+              items:
+                $ref: '#/components/schemas/ResponseNote'
