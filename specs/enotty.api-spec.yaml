@@ -164,7 +164,7 @@ components:
       allOf:
         - type: object
           properties:
-            requestIt:
+            requestId:
               type: string
             result:
               type: string
@@ -223,24 +223,24 @@ components:
           type: string
           title: Иконка файла
           description: Ссылка на изображение иконки
-        isHidden:
+        hidden:
           type: boolean
           title: Скрытый файл
           description: Флаг, отвечающий за то, скрыт файл или нет
-        isFavorite:
+        favorite:
           type: boolean
           title: Файл в избранном
           description: Флаг, помещающий файл в избранное
-        isShowTitle:
+        showTitle:
           type: boolean
           title: Показывать ли заголовок заметки
           description: Флаг, отвечающий за необходимость отображения заголовка заметки
         createdAt:
-          type: string
-          title: Дата создания файла
+          type: number
+          title: Дата создания файла в timestamp
         updatedAt:
-          type: string
-          title: Дата редактирования файла
+          type: number
+          title: Дата редактирования файла в timestamp
         userUid:
           type: string
           title: Уникальный идентификатор владельца файла
@@ -250,11 +250,10 @@ components:
       allOf:
         - $ref: '#/components/schemas/CreatableNote'
         - type: object
-      type: object
-      properties:
-        id:
-          type: string
-          description: Идентификатор файла
+          properties:
+           id:
+            type: string
+            description: Идентификатор файла
 
     ResponseNote:
       description: Структура, описывающая заметку в ответе
@@ -319,6 +318,11 @@ components:
             - middle
             - last
 
+    InitNoteRequest:
+      description: Структура для запроса начального состояния при старте клиента
+      allOf:
+        - $ref: '#/components/schemas/BaseMessage'
+        - $ref: '#/components/schemas/BaseRequest'
 
     InitNoteResponse:
       description: Структура для ответа с начальным состоянием при старте клиента
@@ -449,7 +453,7 @@ components:
         - $ref: '#/components/schemas/BaseResponse'
         - type: object
           properties:
-            deletedAd:
+            deletedNote:
               $ref: '#/components/schemas/ResponseNote'
 
     SearchNoteRequest:

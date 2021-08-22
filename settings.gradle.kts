@@ -14,4 +14,5 @@ pluginManagement {
     }
 }
 include("common")
-include("enotty-be-transport-open-api")
+include("transport-open-api")
+include("transport-mapping-open-api")
