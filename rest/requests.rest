@@ -1,0 +1,148 @@
+POST http://127.0.0.1:8080/note/create
+Content-Type: application/json
+
+{
+  "messageType": "CreateNoteRequest",
+  "requestId": "12345",
+  "createNote": {
+    "title": "Супер заметка",
+    "content": "важные данные",
+    "parentId": "root folder",
+    "role": "NOTE",
+    "color": 0
+  },
+  "debug": {
+    "mode": "stub",
+    "stub": "success"
+  }
+}
+
+### With unexisted ID
+POST http://127.0.0.1:8080/note/read
+Content-Type: application/json
+
+{
+  "messageType": "ReadNoteRequest",
+  "requestId": "12345",
+  "readNoteId": "9",
+  "debug": {
+    "mode": "stub",
+    "stub": "success"
+  }
+}
+
+### With Existed id
+POST http://127.0.0.1:8080/note/read
+Content-Type: application/json
+
+{
+  "messageType": "ReadNoteRequest",
+  "requestId": "12345",
+  "readNoteId": "666",
+  "debug": {
+    "mode": "stub",
+    "stub": "success"
+  }
+}
+
+### Update
+POST http://localhost:8080/note/update
+Content-Type: application/json
+
+{
+  "messageType": "UpdateNoteRequest",
+  "requestId": "12345",
+  "createNote": {
+    "id": "note_stub_id",
+    "title": "Супер заметка 2",
+    "content": "важные данные",
+    "parentId": "root folder",
+    "role": "NOTE",
+    "color": 0
+  },
+  "debug": {
+    "mode": "stub",
+    "stub": "success"
+  }
+}
+
+###
+POST http://localhost:8080/note/search
+Content-Type: application/json
+
+{
+  "messageType": "SearchAdRequest",
+  "requestId": "99",
+  "page": {
+    "size": 3,
+    "lastId": "666"
+  }
+}
+
+### Get concrete offers
+POST http://localhost:8080/note/offers
+Content-Type: application/json
+
+{
+  "messageType": "OffersAdRequest",
+  "requestId": "987622",
+  "page": {
+    "size": 2,
+    "lastId": "666"
+  },
+  "deleteAdId": "98765",
+  "debug": {
+    "mode": "stub",
+    "stub": "success"
+  }
+}
+
+### Get all offers
+POST http://localhost:8080/note/offers
+Content-Type: application/json
+
+{
+  "messageType": "OffersAdRequest",
+  "requestId": "987622",
+  "page": {
+    "size": 2,
+    "lastId": "666"
+  },
+  "deleteAdId": null,
+  "debug": {
+    "mode": "stub",
+    "stub": "success"
+  }
+}
+
+### Delete existed
+POST http://localhost:8080/note/delete
+Content-Type: application/json
+
+{
+  "messageType": "DeleteAdRequest",
+  "requestId": null,
+  "deleteAdId": "98765",
+  "debug": {
+    "mode": "stub",
+    "stub": "success"
+  }
+}
+
+### Delete non-existed
+POST https://localhost/ad/delete
+Content-Type: application/json
+
+{
+  "messageType": "DeleteAdRequest",
+  "requestId": null,
+  "deleteAdId": "666",
+  "debug": {
+    "mode": "stub",
+    "stub": "success"
+  }
+}
+
+
+
+

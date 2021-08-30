@@ -11,8 +11,18 @@ pluginManagement {
 
         id("org.openapi.generator") version openApiVersion
 
+        // spring
+        val springBootVersion: String by settings
+        val springDependencyVersion: String by settings
+        val springPluginVersion: String by settings
+
+        id("org.springframework.boot") version springBootVersion
+        id("io.spring.dependency-management") version springDependencyVersion
+        kotlin("plugin.spring") version springPluginVersion
     }
 }
 include("common")
 include("transport-open-api")
 include("transport-mapping-open-api")
+include("spring-backend-app")
+include("enotty-backend-stub")
