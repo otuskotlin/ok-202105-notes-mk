@@ -13,8 +13,8 @@ fun MpContext.toInitResponse() = InitNoteResponse(
 
 fun MpContext.toReadResponse() = ReadNoteResponse(
         requestId = onRequest.takeIf { it.isNotBlank() },
-        readNote = responseNote.takeIf { it != NoteModel() }?.toTransport(),
         errors = errors.takeIf { it.isNotEmpty() }?.map { it.toTransport() },
+        readNote = responseNote.takeIf { it != NoteModel() }?.toTransport(),
         result = if (errors.find { it.level == IError.Level.ERROR } == null) ReadNoteResponse.Result.SUCCESS
         else ReadNoteResponse.Result.ERROR
 )
