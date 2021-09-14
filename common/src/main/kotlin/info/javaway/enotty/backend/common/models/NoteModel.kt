@@ -9,7 +9,6 @@ data class NoteModel(
         var parentId: NoteIdModel = NoteIdModel.NONE,
         var role: Role = Role.NONE,
         var color: Int = 0,
-        var password: String = "",
         var extendedMode: Boolean = false,
         var icon: String = "",
         var isHidden: Boolean = false,
@@ -19,5 +18,4 @@ data class NoteModel(
         var updatedAt: Date = Date(),
         var userUid: UserUidModel = UserUidModel.NONE,
         var permissions: MutableSet<PermissionModel> = mutableSetOf()
-) {
-}
+)

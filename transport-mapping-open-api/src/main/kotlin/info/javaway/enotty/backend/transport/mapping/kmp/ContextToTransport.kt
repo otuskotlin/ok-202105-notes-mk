@@ -72,7 +72,6 @@ private fun NoteModel.toTransport() = ResponseNote(
         parentId = parentId.takeIf { it != NoteIdModel.NONE }?.toString(),
         role = role.takeIf { it != Role.NONE }?.let { ResponseNote.Role.valueOf(it.name) },
         color = color.takeIf { it != 0 },
-        password = password.takeIf { it.isNotBlank() },
         extendedMode = extendedMode,
         icon = icon.takeIf { it.isNotBlank() },
         hidden = isHidden,

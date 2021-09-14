@@ -16,7 +16,6 @@ class SerializationTest {
             createdNote = CreatableNote(
                     title = "folder title",
                     role = CreatableNote.Role.FOLDER,
-                    password = password,
                     icon = icon
             )
     )

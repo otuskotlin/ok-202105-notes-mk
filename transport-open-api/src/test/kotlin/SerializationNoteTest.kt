@@ -21,7 +21,6 @@ class SerializationNoteTest {
                     hidden = false,
                     parentId = "",
                     color = 0,
-                    password = "",
                     extendedMode = false,
                     icon = "",
                     showTitle = true,
