@@ -4,6 +4,7 @@ import info.javaway.android.enotty.openapi.models.*
 import info.javaway.enotty.backend.common.context.MpContext
 import info.javaway.enotty.backend.common.models.*
 import java.text.DateFormat
+import java.time.Instant
 import java.util.*
 
 fun MpContext.setQuery(query: InitNoteRequest) = apply {
@@ -52,8 +53,8 @@ private fun UpdatableNote.toModel() = NoteModel(
         isHidden = hidden ?: false,
         isFavorite = favorite ?: false,
         isShowTitle = showTitle ?: false,
-        createdAt = createdAt?.let { Date(it.toLong()) } ?: Date(),
-        updatedAt = updatedAt?.let { Date(it.toLong()) } ?: Date(),
+        createdAt = createdAt?.let { Instant.ofEpochMilli(it.toLong()) } ?: Instant.now(),
+        updatedAt = updatedAt?.let { Instant.ofEpochMilli(it.toLong()) } ?: Instant.now(),
         userUid = UserUidModel(userUid.orEmpty()),
 )
 
@@ -68,7 +69,7 @@ private fun CreatableNote.toModel() = NoteModel(
         isHidden = hidden ?: false,
         isFavorite = favorite ?: false,
         isShowTitle = showTitle ?: false,
-        createdAt = createdAt?.let { Date(it.toLong()) } ?: Date(),
-        updatedAt = updatedAt?.let { Date(it.toLong()) } ?: Date(),
+        createdAt = createdAt?.let { Instant.ofEpochMilli(it.toLong()) } ?: Instant.now(),
+        updatedAt = updatedAt?.let { Instant.ofEpochMilli(it.toLong()) } ?: Instant.now(),
         userUid = UserUidModel(userUid.orEmpty()),
 )

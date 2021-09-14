@@ -4,6 +4,7 @@ import info.javaway.android.enotty.openapi.models.CreatableNote
 import info.javaway.android.enotty.openapi.models.CreateNoteRequest
 import info.javaway.android.enotty.openapi.models.ResponseNote
 import org.junit.Test
+import java.time.Instant
 import java.util.*
 import kotlin.test.assertContains
 import kotlin.test.assertEquals
@@ -24,8 +25,8 @@ class SerializationNoteTest {
                     extendedMode = false,
                     icon = "",
                     showTitle = true,
-                    createdAt = Date().time.toBigDecimal(),
-                    updatedAt = Date().time.toBigDecimal(),
+                    createdAt = Instant.now().toEpochMilli().toBigDecimal(),
+                    updatedAt = Instant.now().toEpochMilli().toBigDecimal(),
                     userUid = "",
             )
     )

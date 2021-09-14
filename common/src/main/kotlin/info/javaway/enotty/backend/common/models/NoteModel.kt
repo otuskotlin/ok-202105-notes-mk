@@ -1,5 +1,6 @@
 package info.javaway.enotty.backend.common.models
 
+import java.time.Instant
 import java.util.*
 
 data class NoteModel(
@@ -14,8 +15,8 @@ data class NoteModel(
         var isHidden: Boolean = false,
         var isFavorite: Boolean = false,
         var isShowTitle: Boolean = false,
-        var createdAt: Date = Date(),
-        var updatedAt: Date = Date(),
+        var createdAt: Instant = Instant.now(),
+        var updatedAt: Instant = Instant.now(),
         var userUid: UserUidModel = UserUidModel.NONE,
         var permissions: MutableSet<PermissionModel> = mutableSetOf()
 )

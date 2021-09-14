@@ -28,7 +28,7 @@ class MappingTest {
         assertEquals("1111", context.onRequest)
         assertEquals(Role.NOTE, context.requestNote.role)
         assertEquals("tested title", context.requestNote.title)
-        assertEquals("some user", context.requestNote.userUid.uid)
+        assertEquals("some user", context.requestNote.userUid.asString())
     }
 
     @Test
