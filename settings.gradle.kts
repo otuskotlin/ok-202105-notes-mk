@@ -4,12 +4,14 @@ pluginManagement {
     plugins {
         val kotlinVersion: String by settings
         val openApiVersion: String by settings
+        val bmuschkoVersion: String by settings
 
         kotlin("jvm") version kotlinVersion
         kotlin("multiplatform") version kotlinVersion
         kotlin("plugin.serialization") version kotlinVersion
 
         id("org.openapi.generator") version openApiVersion
+        id("com.bmuschko.docker-java-application") version bmuschkoVersion
 
         // spring
         val springBootVersion: String by settings
@@ -26,4 +28,4 @@ include("transport-open-api")
 include("transport-mapping-open-api")
 include("spring-backend-app")
 include("enotty-backend-stub")
-include("ktor-backend-app")
+include("enotty-app-ktor")

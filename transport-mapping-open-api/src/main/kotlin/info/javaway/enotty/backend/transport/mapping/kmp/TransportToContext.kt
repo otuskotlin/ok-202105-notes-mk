@@ -1,36 +1,35 @@
 package info.javaway.enotty.backend.transport.mapping.kmp
 
 import info.javaway.android.enotty.openapi.models.*
-import info.javaway.enotty.backend.common.context.MpContext
+import info.javaway.enotty.backend.common.context.EnottyContext
 import info.javaway.enotty.backend.common.models.*
-import java.text.DateFormat
 import java.util.*
 
-fun MpContext.setQuery(query: InitNoteRequest) = apply {
+fun EnottyContext.setQuery(query: InitNoteRequest) = apply {
     onRequest = query.requestId.orEmpty()
 }
 
-fun MpContext.setQuery(query: CreateNoteRequest) = apply {
+fun EnottyContext.setQuery(query: CreateNoteRequest) = apply {
     onRequest = query.requestId.orEmpty()
     requestNote = query.createdNote?.toModel() ?: NoteModel()
 }
 
-fun MpContext.setQuery(query: ReadNoteRequest) = apply {
+fun EnottyContext.setQuery(query: ReadNoteRequest) = apply {
     onRequest = query.requestId.orEmpty()
     requestNoteId = NoteIdModel(query.readNoteId.orEmpty())
 }
 
-fun MpContext.setQuery(query: UpdateNoteRequest) = apply{
+fun EnottyContext.setQuery(query: UpdateNoteRequest) = apply{
     onRequest = query.requestId.orEmpty()
     requestNote = query.createNote?.toModel() ?: NoteModel()
 }
 
-fun MpContext.setQuery(query: DeleteNoteRequest) = apply{
+fun EnottyContext.setQuery(query: DeleteNoteRequest) = apply{
     onRequest = query.requestId.orEmpty()
     requestNoteId = NoteIdModel(query.deleteNoteId.orEmpty())
 }
 
-fun MpContext.setQuery(query: SearchNoteRequest) = apply{
+fun EnottyContext.setQuery(query: SearchNoteRequest) = apply{
     onRequest = query.requestId.orEmpty()
     requestPage = query.page?.toModel() ?: PaginatedModel()
 }

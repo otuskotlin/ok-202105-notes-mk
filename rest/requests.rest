@@ -1,14 +1,14 @@
-POST http://127.0.0.1:8080/note/create
+POST http://0.0.0.0:8080/note/create
 Content-Type: application/json
 
 {
   "messageType": "CreateNoteRequest",
   "requestId": "12345",
-  "createNote": {
+  "createdNote": {
     "title": "Супер заметка",
     "content": "важные данные",
     "parentId": "root folder",
-    "role": "NOTE",
+    "role": "note",
     "color": 0
   },
   "debug": {
@@ -18,7 +18,7 @@ Content-Type: application/json
 }
 
 ### With unexisted ID
-POST http://127.0.0.1:8080/note/read
+POST http://0.0.0.0:8080/note/read
 Content-Type: application/json
 
 {
@@ -32,13 +32,13 @@ Content-Type: application/json
 }
 
 ### With Existed id
-POST http://127.0.0.1:8080/note/read
+POST http://0.0.0.0:8080/note/read
 Content-Type: application/json
 
 {
   "messageType": "ReadNoteRequest",
   "requestId": "12345",
-  "readNoteId": "666",
+  "readNoteId": "note_stub_id",
   "debug": {
     "mode": "stub",
     "stub": "success"
@@ -46,7 +46,7 @@ Content-Type: application/json
 }
 
 ### Update
-POST http://localhost:8080/note/update
+POST http://0.0.0.0:8080/note/update
 Content-Type: application/json
 
 {
@@ -55,9 +55,9 @@ Content-Type: application/json
   "createNote": {
     "id": "note_stub_id",
     "title": "Супер заметка 2",
-    "content": "важные данные",
+    "content": "важные данные2 ",
     "parentId": "root folder",
-    "role": "NOTE",
+    "role": "note",
     "color": 0
   },
   "debug": {
@@ -66,12 +66,12 @@ Content-Type: application/json
   }
 }
 
-###
-POST http://localhost:8080/note/search
+### search incorrect id
+POST http://0.0.0.0:8080/note/search
 Content-Type: application/json
 
 {
-  "messageType": "SearchAdRequest",
+  "messageType": "SearchNoteRequest",
   "requestId": "99",
   "page": {
     "size": 3,
@@ -79,50 +79,27 @@ Content-Type: application/json
   }
 }
 
-### Get concrete offers
-POST http://localhost:8080/note/offers
+### search correct id
+POST http://0.0.0.0:8080/note/search
 Content-Type: application/json
 
 {
-  "messageType": "OffersAdRequest",
-  "requestId": "987622",
+  "messageType": "SearchNoteRequest",
+  "requestId": "99",
   "page": {
-    "size": 2,
-    "lastId": "666"
-  },
-  "deleteAdId": "98765",
-  "debug": {
-    "mode": "stub",
-    "stub": "success"
-  }
-}
-
-### Get all offers
-POST http://localhost:8080/note/offers
-Content-Type: application/json
-
-{
-  "messageType": "OffersAdRequest",
-  "requestId": "987622",
-  "page": {
-    "size": 2,
-    "lastId": "666"
-  },
-  "deleteAdId": null,
-  "debug": {
-    "mode": "stub",
-    "stub": "success"
+    "size": 3,
+    "lastId": "note_stub_id"
   }
 }
 
 ### Delete existed
-POST http://localhost:8080/note/delete
+POST http://0.0.0.0:8080/note/delete
 Content-Type: application/json
 
 {
-  "messageType": "DeleteAdRequest",
+  "messageType": "DeleteNoteRequest",
   "requestId": null,
-  "deleteAdId": "98765",
+  "deleteNoteId": "note_stub_id",
   "debug": {
     "mode": "stub",
     "stub": "success"
@@ -130,13 +107,13 @@ Content-Type: application/json
 }
 
 ### Delete non-existed
-POST https://localhost/ad/delete
+POST http://0.0.0.0:8080/note/delete
 Content-Type: application/json
 
 {
-  "messageType": "DeleteAdRequest",
+  "messageType": "DeleteNoteRequest",
   "requestId": null,
-  "deleteAdId": "666",
+  "deleteNoteId": "612",
   "debug": {
     "mode": "stub",
     "stub": "success"

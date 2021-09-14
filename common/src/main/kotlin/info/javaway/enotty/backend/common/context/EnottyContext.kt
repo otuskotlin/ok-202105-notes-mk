@@ -1,11 +1,8 @@
 package info.javaway.enotty.backend.common.context
 
-import info.javaway.enotty.backend.common.models.IError
-import info.javaway.enotty.backend.common.models.NoteIdModel
-import info.javaway.enotty.backend.common.models.NoteModel
-import info.javaway.enotty.backend.common.models.PaginatedModel
+import info.javaway.enotty.backend.common.models.*
 
-data class MpContext(
+data class EnottyContext(
         var onRequest: String = "",
         var requestNoteId: NoteIdModel = NoteIdModel.NONE,
         var requestNote: NoteModel = NoteModel(),
@@ -16,3 +13,13 @@ data class MpContext(
         var errors: MutableList<IError> = mutableListOf(),
         var status: CorStatus = CorStatus.STARTED,
 )
+
+fun EnottyContext.addError(lambda: CommonErrorModel.() -> Unit) =
+        apply {
+            status = CorStatus.FAILING
+            errors.add(
+                    CommonErrorModel(
+                            field = "_", level = IError.Level.ERROR
+                    ).apply(lambda)
+            )
+        }

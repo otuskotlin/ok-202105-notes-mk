@@ -1,17 +1,17 @@
 package info.javaway.enotty.backend.transport.mapping.kmp
 
 import info.javaway.android.enotty.openapi.models.*
-import info.javaway.enotty.backend.common.context.MpContext
+import info.javaway.enotty.backend.common.context.EnottyContext
 import info.javaway.enotty.backend.common.models.*
 
-fun MpContext.toInitResponse() = InitNoteResponse(
+fun EnottyContext.toInitResponse() = InitNoteResponse(
         requestId = onRequest.takeIf { it.isNotBlank() },
         errors = errors.takeIf { it.isNotEmpty() }?.map { it.toTransport() },
         result = if (errors.find { it.level == IError.Level.ERROR } == null) InitNoteResponse.Result.SUCCESS
         else InitNoteResponse.Result.ERROR
 )
 
-fun MpContext.toReadResponse() = ReadNoteResponse(
+fun EnottyContext.toReadResponse() = ReadNoteResponse(
         requestId = onRequest.takeIf { it.isNotBlank() },
         readNote = responseNote.takeIf { it != NoteModel() }?.toTransport(),
         errors = errors.takeIf { it.isNotEmpty() }?.map { it.toTransport() },
@@ -19,15 +19,15 @@ fun MpContext.toReadResponse() = ReadNoteResponse(
         else ReadNoteResponse.Result.ERROR
 )
 
-fun MpContext.toCreateResponse() = CreateNoteResponse(
+fun EnottyContext.toCreateResponse() = CreateNoteResponse(
         requestId = onRequest.takeIf { it.isNotBlank() },
         errors = errors.takeIf { it.isNotEmpty() }?.map { it.toTransport() },
         createdNote = responseNote.takeIf { it != NoteModel() }?.toTransport(),
-        result = if (errors.find { it.level == IError.Level.ERROR } == null) CreateNoteResponse.Result.ERROR
+        result = if (errors.find { it.level == IError.Level.ERROR } == null) CreateNoteResponse.Result.SUCCESS
         else CreateNoteResponse.Result.ERROR
 )
 
-fun MpContext.toUpdateResponse() = UpdateNoteResponse(
+fun EnottyContext.toUpdateResponse() = UpdateNoteResponse(
         requestId = onRequest.takeIf { it.isNotBlank() },
         errors = errors.takeIf { it.isNotEmpty() }?.map { it.toTransport() },
         updateNote = responseNote.takeIf { it != NoteModel() }?.toTransport(),
@@ -35,7 +35,7 @@ fun MpContext.toUpdateResponse() = UpdateNoteResponse(
         else UpdateNoteResponse.Result.ERROR
 )
 
-fun MpContext.toDeleteResponse() = DeleteNoteResponse(
+fun EnottyContext.toDeleteResponse() = DeleteNoteResponse(
         requestId = onRequest.takeIf { it.isNotBlank() },
         errors = errors.takeIf { it.isNotEmpty() }?.map { it.toTransport() },
         deletedNote = responseNote.takeIf { it != NoteModel() }?.toTransport(),
@@ -43,7 +43,7 @@ fun MpContext.toDeleteResponse() = DeleteNoteResponse(
         else DeleteNoteResponse.Result.ERROR
 )
 
-fun MpContext.toSearchResponse() = SearchNoteResponse(
+fun EnottyContext.toSearchResponse() = SearchNoteResponse(
         requestId = onRequest.takeIf { it.isNotBlank() },
         errors = errors.takeIf { it.isNotEmpty() }?.map { it.toTransport() },
         foundNotes = responseNotes.takeIf { it.isNotEmpty() }?.filter { it != NoteModel() }?.map { it.toTransport() },
