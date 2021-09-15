@@ -77,9 +77,9 @@ private fun NoteModel.toTransport() = ResponseNote(
         hidden = isHidden,
         favorite = isFavorite,
         showTitle = isShowTitle,
-        createdAt = createdAt.time.toBigDecimal(),
-        updatedAt = updatedAt.time.toBigDecimal(),
-        userUid = userUid.takeIf { it != UserUidModel.NONE }?.uid,
+        createdAt = createdAt.toEpochMilli().toBigDecimal(),
+        updatedAt = updatedAt.toEpochMilli().toBigDecimal(),
+        userUid = userUid.takeIf { it != UserUidModel.NONE }?.asString(),
         permissions = permissions.takeIf { it.isNotEmpty() }?.filter { it != PermissionModel.NONE }
                 ?.map { NotePermissions.valueOf(it.name) }?.toSet()
 )

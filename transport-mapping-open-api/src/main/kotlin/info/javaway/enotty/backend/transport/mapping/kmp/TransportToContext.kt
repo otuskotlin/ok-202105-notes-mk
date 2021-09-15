@@ -3,7 +3,6 @@ package info.javaway.enotty.backend.transport.mapping.kmp
 import info.javaway.android.enotty.openapi.models.*
 import info.javaway.enotty.backend.common.context.EnottyContext
 import info.javaway.enotty.backend.common.models.*
-import java.text.DateFormat
 import java.time.Instant
 import java.util.*
 

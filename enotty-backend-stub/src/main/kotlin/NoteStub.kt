@@ -1,4 +1,5 @@
 import info.javaway.enotty.backend.common.models.*
+import java.time.Instant
 import java.util.*
 
 object Note {
@@ -10,14 +11,13 @@ object Note {
             parentId = NoteIdModel(id = "root_folder"),
             role = Role.NOTE,
             color = 0x444444,
-            password = "0000",
             extendedMode = false,
             icon = "default icon",
             isHidden = false,
             isFavorite = false,
             isShowTitle = false,
-            createdAt = Date(),
-            updatedAt = Date(),
+            createdAt = Instant.now(),
+            updatedAt = Instant.now(),
             userUid = UserUidModel(uid = "asdfjklewr"),
             permissions = mutableSetOf(PermissionModel.SHARE)
     )
@@ -29,14 +29,13 @@ object Note {
             parentId = NoteIdModel(id = "root folder"),
             role = Role.NOTE,
             color = 0,
-            password = "",
             extendedMode = false,
             icon = "",
             isHidden = false,
             isFavorite = false,
             isShowTitle = false,
-            createdAt = Date(),
-            updatedAt = Date(),
+            createdAt = Instant.now(),
+            updatedAt = Instant.now(),
             userUid = UserUidModel(uid = ""),
             permissions = mutableSetOf()
     )
@@ -59,7 +58,6 @@ object Note {
         parentId = updatableNote.parentId
         role = updatableNote.role
         color = updatableNote.color
-        password = updatableNote.password
         extendedMode = updatableNote.extendedMode
         icon = updatableNote.icon
         isHidden = updatableNote.isHidden

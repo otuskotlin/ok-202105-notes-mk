@@ -1,6 +1,7 @@
 package info.javaway.enotty.backend.common.context
 
 import info.javaway.enotty.backend.common.models.*
+import info.javaway.enotty.backend.common.models.PaginatedModel
 
 data class EnottyContext(
         var onRequest: String = "",

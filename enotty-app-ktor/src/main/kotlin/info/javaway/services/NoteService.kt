@@ -8,13 +8,12 @@ import info.javaway.enotty.backend.common.models.NoteIdModel
 class NoteService {
     fun createNote(eContext: EnottyContext): EnottyContext {
         return eContext.apply {
-            print(this.requestNote)
             responseNote = this.requestNote.copy(id = NoteIdModel("created_note_3434"))
         }
     }
 
     fun readNote(eContext: EnottyContext): EnottyContext {
-        val requestedId = eContext.requestNoteId.id
+        val requestedId = eContext.requestNoteId.asString()
         val shouldReturnStub = Note.isCorrectedId(requestedId)
 
         return if (shouldReturnStub) {
@@ -34,7 +33,7 @@ class NoteService {
     }
 
     fun deleteNote(context: EnottyContext): EnottyContext {
-        val shouldReturnStub = Note.isCorrectedId(context.requestNoteId.id)
+        val shouldReturnStub = Note.isCorrectedId(context.requestNoteId.asString())
 
         return if (shouldReturnStub) {
             context.apply { responseNote = Note.getModel() }
@@ -42,7 +41,7 @@ class NoteService {
             context.addError {
                 field = "id"
                 level = IError.Level.WARNING
-                message = "Note with id ${context.requestNote.id.id} doesn't exist"
+                message = "Note with id ${context.requestNote.id.asString()} doesn't exist"
             }
         }
     }
@@ -52,7 +51,7 @@ class NoteService {
 
         val idToFind = requestPage.lastId
 
-        val shouldReturnStub = Note.isCorrectedId(idToFind.id)
+        val shouldReturnStub = Note.isCorrectedId(idToFind.asString())
 
         return if (shouldReturnStub) {
             context.apply {
@@ -62,7 +61,7 @@ class NoteService {
             context.addError {
                 field = "id"
                 level = IError.Level.WARNING
-                message = "Note with id ${idToFind.id} doesn't exist"
+                message = "Note with id ${idToFind.asString()} doesn't exist"
             }
         }
     }
