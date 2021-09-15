@@ -52,7 +52,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/CreateNoteResponse'
 
-
   /note/read:
     post:
       tags:
@@ -211,10 +210,6 @@ components:
           type: integer
           title: Цвет файла
           description: Цветная маска, накладываемая на иконку файла
-        password:
-          type: string
-          title: Пароль
-          description: Пароль на вход в папку
         extendedMode:
           type: boolean
           title: Расширенный режим редактирования

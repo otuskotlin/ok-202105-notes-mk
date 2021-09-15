@@ -3,6 +3,8 @@ package info.javaway.enotty.backend.transport.mapping.kmp
 import info.javaway.android.enotty.openapi.models.*
 import info.javaway.enotty.backend.common.context.EnottyContext
 import info.javaway.enotty.backend.common.models.*
+import java.text.DateFormat
+import java.time.Instant
 import java.util.*
 
 fun EnottyContext.setQuery(query: InitNoteRequest) = apply {
@@ -46,14 +48,13 @@ private fun UpdatableNote.toModel() = NoteModel(
         parentId = NoteIdModel(parentId.orEmpty()),
         role = role?.let { Role.valueOf(it.name) } ?: Role.NONE,
         color = color ?: 0,
-        password = password.orEmpty(),
         extendedMode = extendedMode ?: false,
         icon = icon.orEmpty(),
         isHidden = hidden ?: false,
         isFavorite = favorite ?: false,
         isShowTitle = showTitle ?: false,
-        createdAt = createdAt?.let { Date(it.toLong()) } ?: Date(),
-        updatedAt = updatedAt?.let { Date(it.toLong()) } ?: Date(),
+        createdAt = createdAt?.let { Instant.ofEpochMilli(it.toLong()) } ?: Instant.now(),
+        updatedAt = updatedAt?.let { Instant.ofEpochMilli(it.toLong()) } ?: Instant.now(),
         userUid = UserUidModel(userUid.orEmpty()),
 )
 
@@ -63,13 +64,12 @@ private fun CreatableNote.toModel() = NoteModel(
         parentId = NoteIdModel(parentId.orEmpty()),
         role = role?.let { Role.valueOf(it.name) } ?: Role.NONE,
         color = color ?: 0,
-        password = password.orEmpty(),
         extendedMode = extendedMode ?: false,
         icon = icon.orEmpty(),
         isHidden = hidden ?: false,
         isFavorite = favorite ?: false,
         isShowTitle = showTitle ?: false,
-        createdAt = createdAt?.let { Date(it.toLong()) } ?: Date(),
-        updatedAt = updatedAt?.let { Date(it.toLong()) } ?: Date(),
+        createdAt = createdAt?.let { Instant.ofEpochMilli(it.toLong()) } ?: Instant.now(),
+        updatedAt = updatedAt?.let { Instant.ofEpochMilli(it.toLong()) } ?: Instant.now(),
         userUid = UserUidModel(userUid.orEmpty()),
 )

@@ -13,8 +13,8 @@ fun EnottyContext.toInitResponse() = InitNoteResponse(
 
 fun EnottyContext.toReadResponse() = ReadNoteResponse(
         requestId = onRequest.takeIf { it.isNotBlank() },
-        readNote = responseNote.takeIf { it != NoteModel() }?.toTransport(),
         errors = errors.takeIf { it.isNotEmpty() }?.map { it.toTransport() },
+        readNote = responseNote.takeIf { it != NoteModel() }?.toTransport(),
         result = if (errors.find { it.level == IError.Level.ERROR } == null) ReadNoteResponse.Result.SUCCESS
         else ReadNoteResponse.Result.ERROR
 )
@@ -72,7 +72,6 @@ private fun NoteModel.toTransport() = ResponseNote(
         parentId = parentId.takeIf { it != NoteIdModel.NONE }?.toString(),
         role = role.takeIf { it != Role.NONE }?.let { ResponseNote.Role.valueOf(it.name) },
         color = color.takeIf { it != 0 },
-        password = password.takeIf { it.isNotBlank() },
         extendedMode = extendedMode,
         icon = icon.takeIf { it.isNotBlank() },
         hidden = isHidden,
