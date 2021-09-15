@@ -55,7 +55,7 @@ fun Application.module() {
 
     routing {
         get("/") {
-            call.respondText("Hello World!")
+            call.respondText("Hello, Kotlin!")
         }
         note(noteService)
 //

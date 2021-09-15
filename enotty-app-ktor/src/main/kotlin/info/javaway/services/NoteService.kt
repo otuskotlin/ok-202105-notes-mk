@@ -8,7 +8,7 @@ import info.javaway.enotty.backend.common.models.NoteIdModel
 class NoteService {
     fun createNote(eContext: EnottyContext): EnottyContext {
         return eContext.apply {
-            responseNote = this.requestNote.copy(id = NoteIdModel("created_note_3434"))
+            responseNote = Note.getModel()
         }
     }
 

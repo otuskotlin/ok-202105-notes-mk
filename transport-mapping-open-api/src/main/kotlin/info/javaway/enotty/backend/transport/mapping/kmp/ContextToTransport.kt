@@ -66,10 +66,10 @@ private fun IError.toTransport() = RequestError(
 
 
 private fun NoteModel.toTransport() = ResponseNote(
-        id = id.takeIf { it != NoteIdModel.NONE }?.toString(),
+        id = id.takeIf { it != NoteIdModel.NONE }?.asString(),
         title = title.takeIf { it.isNotBlank() },
         content = content.takeIf { it.isNotBlank() },
-        parentId = parentId.takeIf { it != NoteIdModel.NONE }?.toString(),
+        parentId = parentId.takeIf { it != NoteIdModel.NONE }?.asString(),
         role = role.takeIf { it != Role.NONE }?.let { ResponseNote.Role.valueOf(it.name) },
         color = color.takeIf { it != 0 },
         extendedMode = extendedMode,
