@@ -2,6 +2,7 @@ package info.javaway.enotty.backend.transport.mapping.kmp
 
 import info.javaway.android.enotty.openapi.models.*
 import info.javaway.enotty.backend.common.context.EnottyContext
+import info.javaway.enotty.backend.common.exceptions.EnottyOperationsNotSet
 import info.javaway.enotty.backend.common.models.*
 
 fun EnottyContext.toInitResponse() = InitNoteResponse(
@@ -51,6 +52,17 @@ fun EnottyContext.toSearchResponse() = SearchNoteResponse(
         result = if (errors.find { it.level == IError.Level.ERROR } == null) SearchNoteResponse.Result.SUCCESS
         else SearchNoteResponse.Result.ERROR
 )
+
+fun EnottyContext.toResponse() = when(operation){
+        EnottyContext.EnottyOperations.INIT -> toInitResponse()
+        EnottyContext.EnottyOperations.CREATE -> toCreateResponse()
+        EnottyContext.EnottyOperations.READ -> toReadResponse()
+        EnottyContext.EnottyOperations.UPDATE-> toUpdateResponse()
+        EnottyContext.EnottyOperations.DELETE -> toDeleteResponse()
+        EnottyContext.EnottyOperations.SEARCH -> toSearchResponse()
+        EnottyContext.EnottyOperations.NONE ->
+                throw EnottyOperationsNotSet("Operation for error response is not set")
+}
 
 private fun PaginatedModel.toTransport() = BasePaginatedResponse(
         size = size.takeIf { it != Int.MIN_VALUE },

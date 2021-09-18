@@ -7,30 +7,36 @@ import java.time.Instant
 import java.util.*
 
 fun EnottyContext.setQuery(query: InitNoteRequest) = apply {
+    operation = EnottyContext.EnottyOperations.INIT
     onRequest = query.requestId.orEmpty()
 }
 
 fun EnottyContext.setQuery(query: CreateNoteRequest) = apply {
+    operation = EnottyContext.EnottyOperations.CREATE
     onRequest = query.requestId.orEmpty()
     requestNote = query.createdNote?.toModel() ?: NoteModel()
 }
 
 fun EnottyContext.setQuery(query: ReadNoteRequest) = apply {
+    operation = EnottyContext.EnottyOperations.READ
     onRequest = query.requestId.orEmpty()
     requestNoteId = NoteIdModel(query.readNoteId.orEmpty())
 }
 
 fun EnottyContext.setQuery(query: UpdateNoteRequest) = apply{
+    operation = EnottyContext.EnottyOperations.UPDATE
     onRequest = query.requestId.orEmpty()
     requestNote = query.createNote?.toModel() ?: NoteModel()
 }
 
 fun EnottyContext.setQuery(query: DeleteNoteRequest) = apply{
+    operation = EnottyContext.EnottyOperations.DELETE
     onRequest = query.requestId.orEmpty()
     requestNoteId = NoteIdModel(query.deleteNoteId.orEmpty())
 }
 
 fun EnottyContext.setQuery(query: SearchNoteRequest) = apply{
+    operation = EnottyContext.EnottyOperations.SEARCH
     onRequest = query.requestId.orEmpty()
     requestPage = query.page?.toModel() ?: PaginatedModel()
 }
