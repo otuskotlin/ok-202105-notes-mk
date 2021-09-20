@@ -1,0 +1,125 @@
+POST http://0.0.0.0:8080/note/create
+Content-Type: application/json
+
+{
+  "messageType": "CreateNoteRequest",
+  "requestId": "12345",
+  "createdNote": {
+    "title": "Супер заметка",
+    "content": "важные данные",
+    "parentId": "root folder",
+    "role": "note",
+    "color": 0
+  },
+  "debug": {
+    "mode": "stub",
+    "stub": "success"
+  }
+}
+
+### With unexisted ID
+POST http://0.0.0.0:8080/note/read
+Content-Type: application/json
+
+{
+  "messageType": "ReadNoteRequest",
+  "requestId": "12345",
+  "readNoteId": "9",
+  "debug": {
+    "mode": "stub",
+    "stub": "success"
+  }
+}
+
+### With Existed id
+POST http://0.0.0.0:8080/note/read
+Content-Type: application/json
+
+{
+  "messageType": "ReadNoteRequest",
+  "requestId": "12345",
+  "readNoteId": "note_stub_id",
+  "debug": {
+    "mode": "stub",
+    "stub": "success"
+  }
+}
+
+### Update
+POST http://0.0.0.0:8080/note/update
+Content-Type: application/json
+
+{
+  "messageType": "UpdateNoteRequest",
+  "requestId": "12345",
+  "createNote": {
+    "id": "note_stub_id",
+    "title": "Супер заметка 2",
+    "content": "важные данные2 ",
+    "parentId": "root folder",
+    "role": "note",
+    "color": 0
+  },
+  "debug": {
+    "mode": "stub",
+    "stub": "success"
+  }
+}
+
+### search incorrect id
+POST http://0.0.0.0:8080/note/search
+Content-Type: application/json
+
+{
+  "messageType": "SearchNoteRequest",
+  "requestId": "99",
+  "page": {
+    "size": 3,
+    "lastId": "666"
+  }
+}
+
+### search correct id
+POST http://0.0.0.0:8080/note/search
+Content-Type: application/json
+
+{
+  "messageType": "SearchNoteRequest",
+  "requestId": "99",
+  "page": {
+    "size": 3,
+    "lastId": "note_stub_id"
+  }
+}
+
+### Delete existed
+POST http://0.0.0.0:8080/note/delete
+Content-Type: application/json
+
+{
+  "messageType": "DeleteNoteRequest",
+  "requestId": null,
+  "deleteNoteId": "note_stub_id",
+  "debug": {
+    "mode": "stub",
+    "stub": "success"
+  }
+}
+
+### Delete non-existed
+POST http://0.0.0.0:8080/note/delete
+Content-Type: application/json
+
+{
+  "messageType": "DeleteNoteRequest",
+  "requestId": null,
+  "deleteNoteId": "612",
+  "debug": {
+    "mode": "stub",
+    "stub": "success"
+  }
+}
+
+
+
+
