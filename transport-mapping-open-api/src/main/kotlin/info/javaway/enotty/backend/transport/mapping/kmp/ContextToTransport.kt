@@ -1,17 +1,18 @@
 package info.javaway.enotty.backend.transport.mapping.kmp
 
 import info.javaway.android.enotty.openapi.models.*
-import info.javaway.enotty.backend.common.context.MpContext
+import info.javaway.enotty.backend.common.context.EnottyContext
+import info.javaway.enotty.backend.common.exceptions.EnottyOperationsNotSet
 import info.javaway.enotty.backend.common.models.*
 
-fun MpContext.toInitResponse() = InitNoteResponse(
+fun EnottyContext.toInitResponse() = InitNoteResponse(
         requestId = onRequest.takeIf { it.isNotBlank() },
         errors = errors.takeIf { it.isNotEmpty() }?.map { it.toTransport() },
         result = if (errors.find { it.level == IError.Level.ERROR } == null) InitNoteResponse.Result.SUCCESS
         else InitNoteResponse.Result.ERROR
 )
 
-fun MpContext.toReadResponse() = ReadNoteResponse(
+fun EnottyContext.toReadResponse() = ReadNoteResponse(
         requestId = onRequest.takeIf { it.isNotBlank() },
         errors = errors.takeIf { it.isNotEmpty() }?.map { it.toTransport() },
         readNote = responseNote.takeIf { it != NoteModel() }?.toTransport(),
@@ -19,15 +20,15 @@ fun MpContext.toReadResponse() = ReadNoteResponse(
         else ReadNoteResponse.Result.ERROR
 )
 
-fun MpContext.toCreateResponse() = CreateNoteResponse(
+fun EnottyContext.toCreateResponse() = CreateNoteResponse(
         requestId = onRequest.takeIf { it.isNotBlank() },
         errors = errors.takeIf { it.isNotEmpty() }?.map { it.toTransport() },
         createdNote = responseNote.takeIf { it != NoteModel() }?.toTransport(),
-        result = if (errors.find { it.level == IError.Level.ERROR } == null) CreateNoteResponse.Result.ERROR
+        result = if (errors.find { it.level == IError.Level.ERROR } == null) CreateNoteResponse.Result.SUCCESS
         else CreateNoteResponse.Result.ERROR
 )
 
-fun MpContext.toUpdateResponse() = UpdateNoteResponse(
+fun EnottyContext.toUpdateResponse() = UpdateNoteResponse(
         requestId = onRequest.takeIf { it.isNotBlank() },
         errors = errors.takeIf { it.isNotEmpty() }?.map { it.toTransport() },
         updateNote = responseNote.takeIf { it != NoteModel() }?.toTransport(),
@@ -35,7 +36,7 @@ fun MpContext.toUpdateResponse() = UpdateNoteResponse(
         else UpdateNoteResponse.Result.ERROR
 )
 
-fun MpContext.toDeleteResponse() = DeleteNoteResponse(
+fun EnottyContext.toDeleteResponse() = DeleteNoteResponse(
         requestId = onRequest.takeIf { it.isNotBlank() },
         errors = errors.takeIf { it.isNotEmpty() }?.map { it.toTransport() },
         deletedNote = responseNote.takeIf { it != NoteModel() }?.toTransport(),
@@ -43,7 +44,7 @@ fun MpContext.toDeleteResponse() = DeleteNoteResponse(
         else DeleteNoteResponse.Result.ERROR
 )
 
-fun MpContext.toSearchResponse() = SearchNoteResponse(
+fun EnottyContext.toSearchResponse() = SearchNoteResponse(
         requestId = onRequest.takeIf { it.isNotBlank() },
         errors = errors.takeIf { it.isNotEmpty() }?.map { it.toTransport() },
         foundNotes = responseNotes.takeIf { it.isNotEmpty() }?.filter { it != NoteModel() }?.map { it.toTransport() },
@@ -51,6 +52,17 @@ fun MpContext.toSearchResponse() = SearchNoteResponse(
         result = if (errors.find { it.level == IError.Level.ERROR } == null) SearchNoteResponse.Result.SUCCESS
         else SearchNoteResponse.Result.ERROR
 )
+
+fun EnottyContext.toResponse() = when(operation){
+        EnottyContext.EnottyOperations.INIT -> toInitResponse()
+        EnottyContext.EnottyOperations.CREATE -> toCreateResponse()
+        EnottyContext.EnottyOperations.READ -> toReadResponse()
+        EnottyContext.EnottyOperations.UPDATE-> toUpdateResponse()
+        EnottyContext.EnottyOperations.DELETE -> toDeleteResponse()
+        EnottyContext.EnottyOperations.SEARCH -> toSearchResponse()
+        EnottyContext.EnottyOperations.NONE ->
+                throw EnottyOperationsNotSet("Operation for error response is not set")
+}
 
 private fun PaginatedModel.toTransport() = BasePaginatedResponse(
         size = size.takeIf { it != Int.MIN_VALUE },
@@ -66,10 +78,10 @@ private fun IError.toTransport() = RequestError(
 
 
 private fun NoteModel.toTransport() = ResponseNote(
-        id = id.takeIf { it != NoteIdModel.NONE }?.toString(),
+        id = id.takeIf { it != NoteIdModel.NONE }?.asString(),
         title = title.takeIf { it.isNotBlank() },
         content = content.takeIf { it.isNotBlank() },
-        parentId = parentId.takeIf { it != NoteIdModel.NONE }?.toString(),
+        parentId = parentId.takeIf { it != NoteIdModel.NONE }?.asString(),
         role = role.takeIf { it != Role.NONE }?.let { ResponseNote.Role.valueOf(it.name) },
         color = color.takeIf { it != 0 },
         extendedMode = extendedMode,
@@ -77,9 +89,9 @@ private fun NoteModel.toTransport() = ResponseNote(
         hidden = isHidden,
         favorite = isFavorite,
         showTitle = isShowTitle,
-        createdAt = createdAt.time.toBigDecimal(),
-        updatedAt = updatedAt.time.toBigDecimal(),
-        userUid = userUid.takeIf { it != UserUidModel.NONE }?.uid,
+        createdAt = createdAt.toEpochMilli().toBigDecimal(),
+        updatedAt = updatedAt.toEpochMilli().toBigDecimal(),
+        userUid = userUid.takeIf { it != UserUidModel.NONE }?.asString(),
         permissions = permissions.takeIf { it.isNotEmpty() }?.filter { it != PermissionModel.NONE }
                 ?.map { NotePermissions.valueOf(it.name) }?.toSet()
 )

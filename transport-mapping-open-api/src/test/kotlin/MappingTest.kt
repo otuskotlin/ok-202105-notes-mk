@@ -2,7 +2,7 @@ import info.javaway.android.enotty.openapi.models.ResponseNote
 import info.javaway.android.enotty.openapi.models.UpdatableNote
 import info.javaway.android.enotty.openapi.models.UpdateNoteRequest
 import info.javaway.android.enotty.openapi.models.UpdateNoteResponse
-import info.javaway.enotty.backend.common.context.MpContext
+import info.javaway.enotty.backend.common.context.EnottyContext
 import info.javaway.enotty.backend.common.models.*
 import info.javaway.enotty.backend.transport.mapping.kmp.setQuery
 import info.javaway.enotty.backend.transport.mapping.kmp.toUpdateResponse
@@ -24,7 +24,7 @@ class MappingTest {
                 )
         )
 
-        val context = MpContext().setQuery(query)
+        val context = EnottyContext().setQuery(query)
         assertEquals("1111", context.onRequest)
         assertEquals(Role.NOTE, context.requestNote.role)
         assertEquals("tested title", context.requestNote.title)
@@ -33,7 +33,7 @@ class MappingTest {
 
     @Test
     fun updateResponseMappingTest(){
-        val context = MpContext(
+        val context = EnottyContext(
                 onRequest = "123456",
                 responseNote = NoteModel(
                         role = Role.NOTE,
