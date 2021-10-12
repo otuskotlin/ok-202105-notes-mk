@@ -2,6 +2,7 @@ package info.javaway.enotty.controllers
 
 import info.javaway.Utils
 import info.javaway.Utils.assertListEquals
+import info.javaway.Utils.stubDebug
 import info.javaway.android.enotty.openapi.models.*
 import junit.framework.Assert.assertNull
 import org.junit.Test
@@ -13,7 +14,7 @@ class NoteRouterTest : RouterTest() {
 
     @Test
     fun testPostNoteCreate() {
-        val data = CreateNoteRequest(debug = Utils.stubDebug)
+        val data = CreateNoteRequest(createdNote = Utils.stubCreatableNote, debug = Utils.stubDebug)
 
         testPostRequest<CreateNoteResponse>(data, "/note/create") {
             assertEquals(CreateNoteResponse.Result.SUCCESS, result)
@@ -26,21 +27,10 @@ class NoteRouterTest : RouterTest() {
     fun testPostNoteRead() {
         val data = ReadNoteRequest(readNoteId = "444", debug = Utils.stubDebug)
 
-        testPostRequest<ReadNoteResponse>(data, "note/read") {
-            assertEquals(ReadNoteResponse.Result.ERROR, result)
-            assertNotNull(errors)
-            errors!!.apply {
-                assertTrue(isNotEmpty())
-                assertNotNull(find {
-                    it.field == "requestedNoteId" && (it.message?.contains("444") ?: false)
-                })
-            }
-        }
-
-        testPostRequest<ReadNoteResponse>(data.copy(readNoteId = "note_stub_id"), "/note/read") {
+        testPostRequest<ReadNoteResponse>(data, "/note/read") {
             assertEquals(ReadNoteResponse.Result.SUCCESS, result)
             assertNull(errors)
-            assertEquals(Utils.stubResponseNote, readNote)
+            assertEquals(Utils.stubResponseNote.copy(id = "444"), readNote)
         }
     }
 
@@ -51,22 +41,13 @@ class NoteRouterTest : RouterTest() {
         testPostRequest<UpdateNoteResponse>(data, "/note/update") {
             assertEquals(UpdateNoteResponse.Result.SUCCESS, result)
             assertNull(errors)
-            assertEquals(Utils.stubResponseNote.copy(permissions = null), updateNote)
+            assertEquals(Utils.stubResponseNote, updateNote)
         }
     }
 
     @Test
     fun testPostNoteDelete() {
         val data = DeleteNoteRequest(deleteNoteId = "434343", debug = Utils.stubDebug)
-
-        testPostRequest<DeleteNoteResponse>(data, "/note/delete") {
-            assertEquals(DeleteNoteResponse.Result.SUCCESS, result)
-            assertNotNull(errors)
-            errors!!.apply {
-                assertTrue(isNotEmpty())
-                assertNotNull(find { it.field == "id" })
-            }
-        }
 
         testPostRequest<DeleteNoteResponse>(data.copy(deleteNoteId = "note_stub_id"), "/note/delete") {
             assertEquals(DeleteNoteResponse.Result.SUCCESS, result)
@@ -76,7 +57,11 @@ class NoteRouterTest : RouterTest() {
 
     @Test
     fun testPostNoteSearch() {
-        val data = SearchNoteRequest(requestId = "43", page = BasePaginatedRequest(size = 3, lastId = "note_stub_id"))
+        val data = SearchNoteRequest(
+                requestId = "43",
+                page = BasePaginatedRequest(size = 3, lastId = "note_stub_id"),
+                debug = stubDebug
+        )
 
         testPostRequest<SearchNoteResponse>(data, "/note/search") {
             assertEquals(SearchNoteResponse.Result.SUCCESS, result)

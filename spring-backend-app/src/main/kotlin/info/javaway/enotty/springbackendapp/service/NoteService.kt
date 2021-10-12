@@ -18,7 +18,7 @@ class NoteService {
     fun readNote(mpContext: MpContext): MpContext {
         val requestId = mpContext.requestNoteId.id
         val shouldReturnStub = Note.isCorrectedId(requestId)
-        println("haha $shouldReturnStub")
+
         return if (shouldReturnStub)
             mpContext.apply {
                 responseNote = Note.getModel()

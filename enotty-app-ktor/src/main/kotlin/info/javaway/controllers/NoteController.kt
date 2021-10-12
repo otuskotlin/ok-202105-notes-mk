@@ -2,64 +2,90 @@ package info.javaway.controllers
 
 import info.javaway.android.enotty.openapi.models.*
 import info.javaway.enotty.backend.common.context.EnottyContext
-import info.javaway.enotty.backend.transport.mapping.kmp.*
-import info.javaway.services.NoteService
 import io.ktor.application.*
 import io.ktor.request.*
 import io.ktor.response.*
+import info.javaway.enotty.backend.services.NoteService
+import java.time.Instant
+
+suspend fun ApplicationCall.initNote(noteService: NoteService){
+    val request = receive<InitNoteRequest>()
+    val context = EnottyContext(
+            startTime = Instant.now()
+    )
+    val result = try {
+        noteService.initNote(context, request)
+    } catch (e: Throwable){
+        noteService.errorNote(context, e) as InitNoteResponse
+    }
+    respond(result)
+}
 
 suspend fun ApplicationCall.createNote(noteService: NoteService) {
-    val createNoteRequest = receive<CreateNoteRequest>()
-    val eContext = EnottyContext().setQuery(createNoteRequest)
-    val eContextResponse = noteService.createNote(eContext)
-    val eContextReturned = eContextResponse.toCreateResponse()
-    respond(eContextReturned)
-//    respond(
-//           EnottyContext().setQuery(createNoteRequest).let {
-//               noteService.createNote(it)
-//           }.toCreateResponse()
-//    )
+    val request = receive<CreateNoteRequest>()
+    val context = EnottyContext(
+            startTime = Instant.now()
+    )
+    val result = try {
+        noteService.createNote(context, request)
+    } catch (e: Throwable){
+        noteService.errorNote(context, e) as CreateNoteResponse
+    }
+    respond(result)
 }
 
 
 suspend fun ApplicationCall.readNote(noteService: NoteService) {
-    val readNoteRequest = receive<ReadNoteRequest>()
-    respond(
-            EnottyContext().setQuery(readNoteRequest).let {
-                noteService.readNote(it)
-            }.toReadResponse()
+    val request = receive<ReadNoteRequest>()
+    val context = EnottyContext(
+            startTime = Instant.now()
     )
+    val result = try {
+        noteService.readNote(context, request)
+    } catch (e: Throwable){
+        noteService.errorNote(context, e) as ReadNoteResponse
+    }
+    respond(result)
 }
 
 
 suspend fun ApplicationCall.updateNote(noteService: NoteService) {
-    val updateNoteRequest = receive<UpdateNoteRequest>()
-    println(updateNoteRequest)
-    respond(
-            EnottyContext().setQuery(updateNoteRequest).let { context ->
-                println(context)
-                noteService.updateNote(context)
-            }.toUpdateResponse()
+    val request = receive<UpdateNoteRequest>()
+    val context = EnottyContext(
+            startTime = Instant.now()
     )
+    val result = try {
+        noteService.updateNote(context, request)
+    } catch (e: Throwable){
+        noteService.errorNote(context, e) as UpdateNoteResponse
+    }
+    respond(result)
 }
 
 
 suspend fun ApplicationCall.deleteNote(noteService: NoteService) {
-    val deleteNoteRequest = receive<DeleteNoteRequest>()
-    respond(
-            EnottyContext().setQuery(deleteNoteRequest).let {
-                val x = noteService.deleteNote(it)
-                x
-            }.toDeleteResponse()
+    val request = receive<DeleteNoteRequest>()
+    val context = EnottyContext(
+            startTime = Instant.now()
     )
+    val result = try {
+        noteService.deleteNote(context, request)
+    } catch (e: Throwable){
+        noteService.errorNote(context, e) as DeleteNoteResponse
+    }
+    respond(result)
 }
 
 
 suspend fun ApplicationCall.searchNote(noteService: NoteService) {
-    val searchNoteRequest = receive<SearchNoteRequest>()
-    respond(
-            EnottyContext().setQuery(searchNoteRequest).let {
-                noteService.findNote(it)
-            }.toSearchResponse()
+    val request = receive<SearchNoteRequest>()
+    val context = EnottyContext(
+            startTime = Instant.now()
     )
+    val result = try {
+        noteService.searchNote(context, request)
+    } catch (e: Throwable){
+        noteService.errorNote(context, e) as SearchNoteResponse
+    }
+    respond(result)
 }

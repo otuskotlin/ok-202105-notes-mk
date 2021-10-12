@@ -7,6 +7,7 @@ import java.time.Instant
 data class EnottyContext(
         var startTime: Instant = Instant.MIN,
         var operation: EnottyOperations = EnottyOperations.NONE,
+        var stubCase: EnottyStubCase = EnottyStubCase.NONE,
 
         var onRequest: String = "",
         var requestNoteId: NoteIdModel = NoteIdModel.NONE,
@@ -16,7 +17,7 @@ data class EnottyContext(
         var responsePage: PaginatedModel = PaginatedModel(),
         var responseNotes: MutableList<NoteModel> = mutableListOf(),
         var errors: MutableList<IError> = mutableListOf(),
-        var status: CorStatus = CorStatus.STARTED,
+        var status: CorStatus = CorStatus.NONE,
 ){
     enum class EnottyOperations{
         NONE,
@@ -31,15 +32,21 @@ data class EnottyContext(
     /**
      * Добавляет ошибку в контекст
      *
+     * @param error Ошибка, которую необходимо добавить в контекст
      * @param failingStatus Необходимо ли установить статус выполнения в FAILING (true/false)
-     * @param
      */
-    fun addError(failingStatus: Boolean = true, lambda: CommonErrorModel.() -> Unit) = apply {
+    fun addError(error: IError, failingStatus: Boolean = true) = apply {
         if (failingStatus) status = CorStatus.FAILING
-        errors.add(
-                CommonErrorModel(
-                        field = "_", level = IError.Level.ERROR
-                ).apply(lambda)
-        )
+        errors.add(error)
+    }
+
+
+    fun addError(
+            e: Throwable,
+            level: IError.Level = IError.Level.ERROR,
+            field: String = "",
+            failingStatus: Boolean = true
+    ) {
+        addError(CommonErrorModel(e, field = field, level = level), failingStatus)
     }
 }

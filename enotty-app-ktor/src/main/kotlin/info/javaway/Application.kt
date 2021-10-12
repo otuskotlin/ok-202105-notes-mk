@@ -2,15 +2,14 @@ package info.javaway
 
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.SerializationFeature
-import info.javaway.services.NoteService
+import info.javaway.enotty.backend.logic.chains.NoteCrud
+import info.javaway.enotty.backend.services.NoteService
 import io.ktor.application.*
 import io.ktor.features.*
 import io.ktor.http.*
-import io.ktor.http.content.*
 import io.ktor.jackson.*
 import io.ktor.response.*
 import io.ktor.routing.*
-import io.ktor.server.netty.*
 
 // function with config (application.conf)
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
@@ -28,7 +27,8 @@ fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 @Suppress("UNUSED_PARAMETER") // Referenced in application.conf
 @JvmOverloads
 fun Application.module() {
-    val noteService = NoteService()
+    val crud = NoteCrud()
+    val noteService = NoteService(crud)
 
     install(DefaultHeaders)
     install(CORS) {

@@ -1,8 +1,10 @@
 package info.javaway.enotty.backend.common.context
 
 enum class CorStatus {
-    STARTED,
-    FINISHED,
+    NONE,
+    RUNNING,
+    FAILING,
     SUCCESS,
-    FAILING;
+    ERROR,
+    FINISHING;
 }

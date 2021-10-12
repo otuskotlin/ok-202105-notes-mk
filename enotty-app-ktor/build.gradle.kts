@@ -37,6 +37,8 @@ dependencies {
     implementation(project(":enotty-backend-stub"))
     implementation(project(":transport-open-api"))
     implementation(project(":transport-mapping-open-api"))
+    implementation(project(":enotty-be-logic"))
+    implementation(project(":enotty-be-service-openapi"))
 
     testImplementation(kotlin("test-junit"))
     testImplementation(ktor("server-test-host")) // "io.ktor:ktor-server-test-host:$ktorVersion"

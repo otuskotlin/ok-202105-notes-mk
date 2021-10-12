@@ -15,30 +15,35 @@ fun EnottyContext.setQuery(query: CreateNoteRequest) = apply {
     operation = EnottyContext.EnottyOperations.CREATE
     onRequest = query.requestId.orEmpty()
     requestNote = query.createdNote?.toModel() ?: NoteModel()
+    stubCase = query.debug?.stubCase.toModel()
 }
 
 fun EnottyContext.setQuery(query: ReadNoteRequest) = apply {
     operation = EnottyContext.EnottyOperations.READ
     onRequest = query.requestId.orEmpty()
     requestNoteId = NoteIdModel(query.readNoteId.orEmpty())
+    stubCase = query.debug?.stubCase.toModel()
 }
 
 fun EnottyContext.setQuery(query: UpdateNoteRequest) = apply{
     operation = EnottyContext.EnottyOperations.UPDATE
     onRequest = query.requestId.orEmpty()
     requestNote = query.createNote?.toModel() ?: NoteModel()
+    stubCase = query.debug?.stubCase.toModel()
 }
 
 fun EnottyContext.setQuery(query: DeleteNoteRequest) = apply{
     operation = EnottyContext.EnottyOperations.DELETE
     onRequest = query.requestId.orEmpty()
     requestNoteId = NoteIdModel(query.deleteNoteId.orEmpty())
+    stubCase = query.debug?.stubCase.toModel()
 }
 
 fun EnottyContext.setQuery(query: SearchNoteRequest) = apply{
     operation = EnottyContext.EnottyOperations.SEARCH
     onRequest = query.requestId.orEmpty()
     requestPage = query.page?.toModel() ?: PaginatedModel()
+    stubCase = query.debug?.stubCase.toModel()
 }
 
 private fun BasePaginatedRequest.toModel() = PaginatedModel(
@@ -78,3 +83,9 @@ private fun CreatableNote.toModel() = NoteModel(
         updatedAt = updatedAt?.let { Instant.ofEpochMilli(it.toLong()) } ?: Instant.now(),
         userUid = UserUidModel(userUid.orEmpty()),
 )
+
+private fun BaseDebugRequest.StubCase?.toModel() = when(this){
+    BaseDebugRequest.StubCase.SUCCESS -> EnottyStubCase.SUCCESS
+    BaseDebugRequest.StubCase.DATABASE_ERROR -> EnottyStubCase.DATABASE_ERROR
+    null -> EnottyStubCase.NONE
+}

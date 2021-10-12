@@ -1,10 +1,7 @@
 package info.javaway
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import info.javaway.android.enotty.openapi.models.BaseDebugRequest
-import info.javaway.android.enotty.openapi.models.NotePermissions
-import info.javaway.android.enotty.openapi.models.ResponseNote
-import info.javaway.android.enotty.openapi.models.UpdatableNote
+import info.javaway.android.enotty.openapi.models.*
 import info.javaway.enotty.backend.common.models.NoteIdModel
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -23,7 +20,7 @@ object Utils {
         }
     }
 
-    val stubDebug = BaseDebugRequest(mode = BaseDebugRequest.Mode.STUB)
+    val stubDebug = BaseDebugRequest(mode = BaseDebugRequest.Mode.STUB, stubCase = BaseDebugRequest.StubCase.SUCCESS)
 
     val stubResponseNote = ResponseNote(
             title = Note.getModel().title,
@@ -42,6 +39,21 @@ object Utils {
             id = Note.getModel().id.asString(),
             permissions = Note.getModel().permissions.map { NotePermissions.valueOf(it.toString()) }.toSet(),
     )
+
+    val stubCreatableNote = CreatableNote(
+            title = stubResponseNote.title,
+            content = stubResponseNote.content,
+            parentId = stubResponseNote.parentId,
+            role = CreatableNote.Role.valueOf(Note.getModel().role.name),
+            color = stubResponseNote.color,
+            extendedMode = stubResponseNote.extendedMode,
+            icon = stubResponseNote.icon,
+            hidden = stubResponseNote.hidden,
+            favorite = stubResponseNote.favorite,
+            showTitle = stubResponseNote.showTitle,
+            createdAt = stubResponseNote.createdAt,
+            updatedAt = stubResponseNote.updatedAt,
+            userUid = stubResponseNote.userUid)
 
     val stubUpdatableNote = UpdatableNote(
             title = Note.getModel().title,
