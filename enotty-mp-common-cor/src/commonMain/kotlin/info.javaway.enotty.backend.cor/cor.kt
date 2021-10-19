@@ -12,14 +12,14 @@ interface ICorExecDsl<T> {
 }
 
 /**
- * Для чего?
+ * Интерфейс для построения чейнов в DSL Стиле
  */
 interface ICorChainDsl<T> : ICorExecDsl<T>, ICorHandlerDsl<T> {
     fun add(worker: ICorExecDsl<T>)
 }
 
 /**
- * Для чего?
+ * Интерфейс для построения воркеров в DSL стиле
  */
 interface ICorWorkerDsl<T> : ICorExecDsl<T>, ICorHandlerDsl<T> {
     fun handle(function: T.() -> Unit)
@@ -78,11 +78,17 @@ interface ICorWorker<T>: ICorExec<T> {
 }
 
 /**
- * Для чего?
+ * Обобщающий интерфейс для построения воркеров и чейнов
  */
 interface ICorHandlerDsl<T> {
     fun on(function: T.() -> Boolean)
     fun except(function: T.(e: Throwable) -> Unit)
 }
 
+/**
+ * Функция обёртка создающая чейн и применяющая к нему блок с конфигурацией
+ *
+ * @param function блок с параметрами, применяемыми к создаваемому чейну.
+ * @return [CorChainDsl]
+ */
 fun <T> chain(function: CorChainDsl<T>.() -> Unit) = CorChainDsl<T>().apply(function)

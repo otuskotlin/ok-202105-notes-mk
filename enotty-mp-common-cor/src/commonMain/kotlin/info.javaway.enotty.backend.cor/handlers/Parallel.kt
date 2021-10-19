@@ -5,6 +5,15 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 
 /**
+ * Функция, добавляющая в [CorParallelDsl] вложенное параллельное звено,
+ * которое конфигурируется блокном block.
+ */
+@CorDslMarker
+fun <T> ICorChainDsl<T>.parallel(block: CorParallelDsl<T>.() -> Unit){
+    add(CorParallelDsl<T>().apply(block))
+}
+
+/**
  * Обработчик цепочки, который может быть выполнен параллельно.
  *
  * @param execs список обработчиков операций.
@@ -16,7 +25,7 @@ import kotlinx.coroutines.launch
 class CorParallel<T>(
         private val execs: List<ICorExec<T>>,
         override val title: String,
-        override val description: String,
+        override val description: String = "",
         val blockOn: T.() -> Boolean = { true },
         val blockExcept: T.(Throwable) -> Unit = {}
 ) : ICorWorker<T> {
@@ -27,8 +36,15 @@ class CorParallel<T>(
     }
 }
 
+
 /**
- * Класс, отвечающий за узел Dsl, в котором создаётся [CorParallel]
+ * DSL билдер для создания чейна [CorParallel].
+ *
+ * @property title название создаваемого чейна.
+ * @property description описание создаваемого чейна.
+ * @property workers вложенные воркеры-обработчики.
+ * @property blockOn блок кода, отвечающий за необходимость запуска создаваемого чейна.
+ * @property blockExcept блок кода, отвечающий за обработку ошибки в создаваемом чейне.
  */
 @CorDslMarker
 class CorParallelDsl<T>(
@@ -57,9 +73,4 @@ class CorParallelDsl<T>(
     override fun except(function: T.(e: Throwable) -> Unit) {
         blockExcept = function
     }
-}
-
-@CorDslMarker
-fun <T> ICorChainDsl<T>.parallel(function: CorParallelDsl<T>.() -> Unit){
-    add(CorParallelDsl<T>().apply(function))
 }

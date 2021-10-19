@@ -3,10 +3,12 @@ package info.javaway.enotty.backend.cor.handlers
 import info.javaway.enotty.backend.cor.*
 
 /**
- * Функция расширения, добавляющая в билдер звена цепи дополнительные билдер вложенного звена (?)
+ * Функция, добавляющая в [ICorChainDsl] вложенное звено, которое конфигурируется блокном block.
+ *
+ * @param block блок кода с конфигурацией добавляемого звена.
  */
-fun <T> ICorChainDsl<T>.chain(function: CorChainDsl<T>.() -> Unit) {
-    add(CorChainDsl<T>().apply(function))
+fun <T> ICorChainDsl<T>.chain(block: CorChainDsl<T>.() -> Unit) {
+    add(CorChainDsl<T>().apply(block))
 }
 
 /**
@@ -21,7 +23,7 @@ fun <T> ICorChainDsl<T>.chain(function: CorChainDsl<T>.() -> Unit) {
 class CorChain<T>(
         private val execs: List<ICorExec<T>>,
         override val title: String,
-        override val description: String,
+        override val description: String = "",
         val blockOn: T.() -> Boolean = { true },
         val blockExcept: T.(Throwable) -> Unit = {}
 ) : ICorWorker<T> {
@@ -35,7 +37,13 @@ class CorChain<T>(
 }
 
 /**
- * Класс, отвечающий за узел Dsl, в котором создаётся [CorChain]
+ * DSL билдер для создания чейна [CorChain].
+ *
+ * @property title название создаваемого чейна.
+ * @property description описание создаваемого чейна.
+ * @property workers вложенные воркеры-обработчики.
+ * @property blockOn блок кода, отвечающий за необходимость запуска создаваемого чейна.
+ * @property blockExcept блок кода, отвечающий за обработку ошибки в создаваемом чейне.
  */
 @CorDslMarker
 class CorChainDsl<T>(
