@@ -6,6 +6,7 @@ import io.ktor.application.*
 import io.ktor.request.*
 import io.ktor.response.*
 import info.javaway.enotty.backend.services.NoteService
+import info.javaway.enotty.backend.transport.mapping.kmp.toCreateResponse
 import java.time.Instant
 
 suspend fun ApplicationCall.initNote(noteService: NoteService){
@@ -22,14 +23,15 @@ suspend fun ApplicationCall.initNote(noteService: NoteService){
 }
 
 suspend fun ApplicationCall.createNote(noteService: NoteService) {
-    val request = receive<CreateNoteRequest>()
     val context = EnottyContext(
             startTime = Instant.now()
     )
     val result = try {
+        val request = receive<CreateNoteRequest>()
         noteService.createNote(context, request)
     } catch (e: Throwable){
-        noteService.errorNote(context, e) as CreateNoteResponse
+        context.addError(e)
+        context.toCreateResponse()
     }
     respond(result)
 }

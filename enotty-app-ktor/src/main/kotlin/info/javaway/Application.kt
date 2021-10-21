@@ -2,6 +2,7 @@ package info.javaway
 
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.SerializationFeature
+import info.javaway.controllers.*
 import info.javaway.enotty.backend.logic.chains.NoteCrud
 import info.javaway.enotty.backend.services.NoteService
 import io.ktor.application.*
@@ -57,7 +58,13 @@ fun Application.module() {
         get("/") {
             call.respondText("Hello, Kotlin!")
         }
-        note(noteService)
+        route("note"){
+            post("create") { call.createNote(noteService) }
+            post("read"){call.readNote(noteService)}
+            post("update"){call.updateNote(noteService)}
+            post("delete"){call.deleteNote(noteService)}
+            post("search"){call.searchNote(noteService)}
+        }
 //
 //        static("static"){
 //            resources("static")

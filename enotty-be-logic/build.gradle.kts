@@ -10,6 +10,7 @@ dependencies {
     implementation(project(":common"))
     implementation(project(":enotty-mp-common-cor"))
     implementation(project(":enotty-backend-stub"))
+    implementation(project(":enotty-be-validation"))
 
     implementation(kotlin("test"))
     implementation(kotlin("test-junit"))
