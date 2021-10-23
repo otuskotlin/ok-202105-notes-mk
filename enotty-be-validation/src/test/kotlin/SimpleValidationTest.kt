@@ -1,6 +1,7 @@
 import info.javaway.enotty.backend.cor.chain
 import info.javaway.enotty.backend.validation.IValidationError
 import info.javaway.enotty.backend.validation.ValidationResult
+import info.javaway.enotty.backend.validation.validators.ValidatorStringNonEmpty
 import info.javaway.enotty.backend.validation.workers.validation
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
