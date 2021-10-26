@@ -33,7 +33,7 @@ dependencies {
     // logging if you want
     implementation("ch.qos.logback:logback-classic:1.2.5")
 
-    implementation(project(":common"))
+    implementation(project(":enotty-be-common"))
     implementation(project(":enotty-backend-stub"))
     implementation(project(":transport-open-api"))
     implementation(project(":transport-mapping-open-api"))

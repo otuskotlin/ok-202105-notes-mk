@@ -10,27 +10,27 @@ import kotlin.test.assertEquals
 class SimpleValidationTest {
 
     @Test
-    fun pipelineValidation(){
+    fun pipelineValidation() {
 
         val chain = chain<TestContext> {
-            validation{
-                errorHandler{ v: ValidationResult ->
-                    if(!v.isSuccess){
+            validation {
+                errorHandler { v: ValidationResult ->
+                    if (!v.isSuccess) {
                         errors.addAll(v.errors)
                     }
                 }
 
-                validate<String?>{validator(ValidatorStringNonEmpty()); onValue{x}}
-                validate<String?>{validator(ValidatorStringNonEmpty()); onValue{y}}
+                validate<String?> { validator(ValidatorStringNonEmpty()); onValue { x } }
+                validate<String?> { validator(ValidatorStringNonEmpty()); onValue { y } }
             }
         }
 
         val c = TestContext()
 
-         runBlocking {
-             chain.build().exec(c)
-             assertEquals(2, c.errors.size)
-         }
+        runBlocking {
+            chain.build().exec(c)
+            assertEquals(2, c.errors.size)
+        }
 
     }
 

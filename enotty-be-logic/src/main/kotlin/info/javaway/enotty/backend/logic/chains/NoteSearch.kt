@@ -3,6 +3,7 @@ package info.javaway.enotty.backend.logic.chains
 import info.javaway.enotty.backend.common.context.EnottyContext
 import info.javaway.enotty.backend.cor.ICorExec
 import info.javaway.enotty.backend.cor.chain
+import info.javaway.enotty.backend.logic.chains.helpers.enottyValidation
 import info.javaway.enotty.backend.logic.chains.stubs.noteSearchStub
 import info.javaway.enotty.backend.logic.workers.answerPrepareChain
 import info.javaway.enotty.backend.logic.workers.chainInitWorker
@@ -14,7 +15,11 @@ object NoteSearch : ICorExec<EnottyContext> by chain<EnottyContext>({
             targetOperation = EnottyContext.EnottyOperations.SEARCH
     )
     chainInitWorker(title = "Инициализация чейна")
-    // TODO: валидация
+
+    enottyValidation {
+        // TODO: stub
+    }
+
     noteSearchStub(title = "Обработка стабкейса для SEARCH")
     // TODO: продовая логика, работа с бд
 

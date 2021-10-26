@@ -44,7 +44,7 @@ class NoteService {
             context.addError {
                 field = "id"
                 level = IError.Level.WARNING
-                message = "Note with id ${context.requestNote.id.id} doesn't exist"
+                message = "Note with id ${context.requestNote.id.asString()} doesn't exist"
             }
         }
     }

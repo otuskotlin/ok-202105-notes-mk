@@ -12,7 +12,8 @@ Content-Type: application/json
     "color": 0
   },
   "debug": {
-    "mode": "stub"
+    "mode": "stub",
+    "stub": "success"
   }
 }
 
@@ -25,6 +26,7 @@ Content-Type: application/json
   "requestId": "12345",
   "readNoteId": "9",
   "debug": {
+    "mode": "stub",
     "stub": "success"
   }
 }
@@ -38,6 +40,7 @@ Content-Type: application/json
   "requestId": "12345",
   "readNoteId": "note_stub_id",
   "debug": {
+    "mode": "stub",
     "stub": "success"
   }
 }
@@ -58,6 +61,7 @@ Content-Type: application/json
     "color": 0
   },
   "debug": {
+    "mode": "stub",
     "stub": "success"
   }
 }
@@ -97,6 +101,7 @@ Content-Type: application/json
   "requestId": null,
   "deleteNoteId": "note_stub_id",
   "debug": {
+    "mode": "stub",
     "stub": "success"
   }
 }
@@ -110,6 +115,7 @@ Content-Type: application/json
   "requestId": null,
   "deleteNoteId": "612",
   "debug": {
+    "mode": "stub",
     "stub": "success"
   }
 }

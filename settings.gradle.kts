@@ -23,7 +23,7 @@ pluginManagement {
         kotlin("plugin.spring") version springPluginVersion
     }
 }
-include("common")
+include("enotty-be-common")
 include("transport-open-api")
 include("transport-mapping-open-api")
 include("spring-backend-app")
@@ -33,4 +33,4 @@ include("enotty-be-service-openapi")
 include("enotty-mp-common-cor")
 include("enotty-be-logic")
 include("enotty-mp-common-cor")
-include("enotty-be-validation")
+include("enotty-be-common-validation")

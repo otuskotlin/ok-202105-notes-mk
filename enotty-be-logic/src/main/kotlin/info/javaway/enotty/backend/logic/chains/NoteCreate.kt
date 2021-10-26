@@ -5,10 +5,12 @@ import info.javaway.enotty.backend.common.context.EnottyContext
 import info.javaway.enotty.backend.common.models.CommonErrorModel
 import info.javaway.enotty.backend.cor.ICorExec
 import info.javaway.enotty.backend.cor.chain
+import info.javaway.enotty.backend.logic.chains.helpers.enottyValidation
 import info.javaway.enotty.backend.logic.chains.stubs.noteCreateStub
 import info.javaway.enotty.backend.logic.workers.answerPrepareChain
 import info.javaway.enotty.backend.logic.workers.chainInitWorker
 import info.javaway.enotty.backend.logic.workers.checkOperationWorker
+import info.javaway.enotty.backend.validation.validators.ValidatorStringNonEmpty
 import info.javaway.enotty.backend.validation.workers.validation
 
 /**
@@ -22,19 +24,12 @@ object NoteCreate : ICorExec<EnottyContext> by chain<EnottyContext>({
 
     chainInitWorker(title = "Инициализация чейна")
 
-    validation {
-        errorHandler { validationResult ->
-            if (validationResult.isSuccess) return@errorHandler
-            val errs = validationResult.errors.map {
-                CommonErrorModel(message = it.message)
-            }
-            errors.addAll(errs)
-            status = CorStatus.FAILING
-        }
+    noteCreateStub(title = "Обработка стабкейса для CREATE")
 
+    enottyValidation {
         validate<String?> {
-            onValue { this.requestNote.id.id }
-            validator(ValidatorStringNonEmpty())
+            onValue { requestNote.id.asString()}
+            validator(ValidatorStringNonEmpty(field = "id"))
         }
     }
 

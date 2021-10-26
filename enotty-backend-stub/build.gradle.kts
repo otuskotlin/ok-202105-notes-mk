@@ -8,5 +8,5 @@ version = rootProject.version
 
 dependencies {
     implementation(kotlin("stdlib"))
-    implementation(project(":common"))
+    implementation(project(":enotty-be-common"))
 }

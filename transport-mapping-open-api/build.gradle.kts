@@ -12,7 +12,7 @@ repositories{
 dependencies{
     implementation(kotlin("stdlib"))
 
-    implementation(project(":common"))
+    implementation(project(":enotty-be-common"))
     implementation(project(":transport-open-api"))
 
     testImplementation(kotlin("test"))
